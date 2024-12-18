@@ -86,11 +86,15 @@ else:
     if st.session_state["game_state"]["remaining_nouns"] is None:
         initialize_nouns()
 
-    noun_display = st.text_input("Noun:", value=st.session_state["game_state"].get("current_noun", {}).get("Word", ""), disabled=True, key="noun_display")
+    noun_display = st.session_state["game_state"].get("current_noun", {}).get("Word", "")
+    if noun_display:
+        st.markdown(f"### Current Noun: {noun_display}")
+    else:
+        st.markdown("### Current Noun: (None)")
 
     if st.button("Show the Noun"):
         noun_display = show_random_noun()
-        st.text_input("Noun:", value=noun_display, disabled=True, key="noun_display")
+        st.markdown(f"### Current Noun: {noun_display}")
 
     plural_input = st.text_input("Enter the plural form:", key="plural_input")
 
