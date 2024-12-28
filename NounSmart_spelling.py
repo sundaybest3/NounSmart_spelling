@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import random
 
 # Load the CSV file
 csv_url = "https://raw.githubusercontent.com/sundaybest3/NounSmart_spelling/main/nouns_CE_visang.csv"
@@ -26,6 +25,8 @@ if "game_state" not in st.session_state:
         "trials": 0,
         "total_nouns": 0,
     }
+if "plural_input" not in st.session_state:
+    st.session_state.plural_input = ""
 
 # Function to reset the game state
 def reset_game_state():
@@ -54,9 +55,10 @@ def initialize_nouns(nickname):
 def show_random_noun():
     game_state = st.session_state.game_state
     if not game_state["remaining_nouns"]:
-        st.success(f"🎉 Great job, {game_state['nickname']}! All nouns have been answered correctly. (Score: {game_state['score']}/{game_state['total_nouns']})")
+        st.success(f"🎉 Great job, {game_state['nickname']}! All nouns have been answered correctly. (Score: {game_state['score']}/{game_state['trials']})")
         return None
     game_state["current_noun"] = game_state["remaining_nouns"].pop()
+    st.session_state.plural_input = ""  # Clear the input box
     return game_state["current_noun"]["Word"]
 
 # Function to check user's plural input
@@ -70,11 +72,11 @@ def check_plural(user_input):
 
     if user_input.lower().strip() == correct_plural:
         game_state["score"] += 1
-        feedback = f"✅ Correct! The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}' (Score: {game_state['score']}/{game_state['trials']})."
+        feedback = f"✅ Correct! The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. (Score: {game_state['score']}/{game_state['trials']})"
     else:
         # Add the noun back to the remaining list for retry
         game_state["remaining_nouns"].insert(0, game_state["current_noun"])
-        feedback = f"❌ Incorrect. The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. It will appear again. Continue to click show the noun."
+        feedback = f"❌ Incorrect. The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. (Score: {game_state['score']}/{game_state['trials']}). It will appear again."
 
     game_state["current_noun"] = None  # Reset current noun after checking
     return feedback
@@ -100,7 +102,7 @@ if st.session_state.game_state["remaining_nouns"] is not None:
             st.subheader(f"Current Noun: {noun}")
 
     if st.session_state.game_state["current_noun"]:
-        plural_input = st.text_input("Enter the plural form:")
+        plural_input = st.text_input("Enter the plural form:", key="plural_input")
         if st.button("Check Answer"):
             feedback = check_plural(plural_input)
             st.success(feedback)
