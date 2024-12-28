@@ -112,7 +112,7 @@ if st.session_state.game_state["remaining_nouns"] is not None:
             st.success(feedback)
 
 if st.session_state.game_state["remaining_nouns"] is not None and not st.session_state.game_state["remaining_nouns"]:
-    st.markdown(f"🎉 Game over! Final Score: {st.session_state.game_state['score']}/{st.session_state.game_state['total_nouns']}")
+    st.markdown(f"🎉 Game over! The final score is: {st.session_state.game_state['score']}/{st.session_state.game_state['trials']}")
 
 
 
