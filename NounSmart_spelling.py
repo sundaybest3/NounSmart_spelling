@@ -111,8 +111,17 @@ if st.session_state.game_state["remaining_nouns"] is not None:
             feedback = check_plural(plural_input)
             st.success(feedback)
 
+# Final feedback
 if st.session_state.game_state["remaining_nouns"] is not None and not st.session_state.game_state["remaining_nouns"]:
-    st.markdown(f"🎉 Game over! The final score is: {st.session_state.game_state['score']}/{st.session_state.game_state['trials']}")
+    score = st.session_state.game_state["score"]
+    trials = st.session_state.game_state["trials"]
+    total_nouns = st.session_state.game_state["total_nouns"]
+
+    if score == total_nouns and trials == total_nouns:
+        st.markdown(f"🌟 **Perfect score!** Incredible work, {st.session_state.game_state['nickname']}! You got every answer right on the first try! 🌟")
+    else:
+        st.markdown(f"👏 **Well done, {st.session_state.game_state['nickname']}!** You scored {score}/{total_nouns}. Keep practicing to achieve a perfect score!")
+
 
 
 
