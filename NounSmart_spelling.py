@@ -24,6 +24,7 @@ if "game_state" not in st.session_state:
         "score": 0,
         "trials": 0,
         "total_nouns": 0,
+        "answered_correctly": set(),
     }
 if "plural_input" not in st.session_state:
     st.session_state.plural_input = ""
@@ -37,6 +38,7 @@ def reset_game_state():
         "score": 0,
         "trials": 0,
         "total_nouns": 0,
+        "answered_correctly": set(),
     }
 
 # Function to initialize countable nouns
@@ -55,7 +57,7 @@ def initialize_nouns(nickname):
 def show_random_noun():
     game_state = st.session_state.game_state
     if not game_state["remaining_nouns"]:
-        st.success(f"🎉 Great job, {game_state['nickname']}! All nouns have been answered correctly. (Score: {game_state['score']}/{game_state['trials']})")
+        st.success(f"🎉 Great job, {game_state['nickname']}! Final Score: {game_state['score']}/{game_state['total_nouns']}.")
         return None
     game_state["current_noun"] = game_state["remaining_nouns"].pop()
     st.session_state.plural_input = ""  # Clear the input box
@@ -71,7 +73,9 @@ def check_plural(user_input):
     game_state["trials"] += 1
 
     if user_input.lower().strip() == correct_plural:
-        game_state["score"] += 1
+        if game_state["current_noun"]["Word"] not in game_state["answered_correctly"]:
+            game_state["score"] += 1
+            game_state["answered_correctly"].add(game_state["current_noun"]["Word"])
         feedback = f"✅ Correct! The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. (Score: {game_state['score']}/{game_state['trials']})"
     else:
         # Add the noun back to the remaining list for retry
@@ -109,5 +113,6 @@ if st.session_state.game_state["remaining_nouns"] is not None:
 
 if st.session_state.game_state["remaining_nouns"] is not None and not st.session_state.game_state["remaining_nouns"]:
     st.markdown(f"🎉 Game over! Final Score: {st.session_state.game_state['score']}/{st.session_state.game_state['total_nouns']}")
+
 
 
