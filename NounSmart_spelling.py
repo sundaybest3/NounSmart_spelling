@@ -76,9 +76,10 @@ def check_plural(user_input):
 # Streamlit app interface
 st.title("NounSmart: Spelling")
 
-if not st.session_state["game_state"]["nickname"]:
-    st.session_state["game_state"]["nickname"] = st.text_input("Enter your nickname:", key="nickname")
+if st.session_state["game_state"]["nickname"] is None:
+    nickname_input = st.text_input("Enter your nickname:", key="nickname_input")
     if st.button("Start Game"):
+        st.session_state["game_state"]["nickname"] = nickname_input
         initialize_nouns()
 else:
     st.write(f"Welcome, {st.session_state['game_state']['nickname']}!")
@@ -100,6 +101,10 @@ else:
 
     if st.button("Check the Answer"):
         feedback = check_plural(plural_input)
+        st.write(feedback)
+
+    st.write(f"Score: {st.session_state['game_state']['score']}/{st.session_state['game_state']['trials']} (Total Nouns: {st.session_state['game_state']['total_nouns']})")
+
         st.write(feedback)
 
     st.write(f"Score: {st.session_state['game_state']['score']}/{st.session_state['game_state']['trials']} (Total Nouns: {st.session_state['game_state']['total_nouns']})")
