@@ -87,10 +87,10 @@ def check_plural(user_input):
 
 # Streamlit UI
 st.title("NounSmart: Spelling")
-st.markdown("There are 16 items in total. Try to get all the plural forms correct. <br> Enter your nickname to start.")
+st.markdown("There are 16 items in total. Try to get all the plural forms correct.<br>Enter your nickname to start.")
 
 # Input for nickname
-nickname = st.text_input("Enter your nickname:", key="nickname_input")
+nickname = st.text_input("Nickname:", key="nickname_input")
 
 if st.button("Start Game"):
     if nickname:
