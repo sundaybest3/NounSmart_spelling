@@ -74,7 +74,7 @@ def check_plural(user_input):
     else:
         # Add the noun back to the remaining list for retry
         game_state["remaining_nouns"].insert(0, game_state["current_noun"])
-        feedback = f"❌ Incorrect. The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. It will appear again."
+        feedback = f"❌ Incorrect. The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. It will appear again. Continue to click show the noun."
 
     game_state["current_noun"] = None  # Reset current noun after checking
     return feedback
