@@ -16,7 +16,7 @@ if missing_columns:
 # Filter only countable nouns
 df_countable = df[df["Countability"].str.lower() == "countable"].copy()
 
-# Initialize session state
+# Initialize game state in session state
 if "game_state" not in st.session_state:
     st.session_state.game_state = {
         "nickname": None,
@@ -48,8 +48,9 @@ def initialize_nouns(nickname):
     st.session_state.game_state["nickname"] = nickname
     st.session_state.game_state["remaining_nouns"] = filtered_df.sample(frac=1).to_dict(orient="records")
     st.session_state.game_state["total_nouns"] = len(filtered_df)
+    st.session_state.game_state["current_noun"] = None
 
-# Function to show a new noun
+# Function to show a random noun
 def show_random_noun():
     game_state = st.session_state.game_state
     if not game_state["remaining_nouns"]:
@@ -69,9 +70,9 @@ def check_plural(user_input):
 
     if user_input.lower().strip() == correct_plural:
         game_state["score"] += 1
-        feedback = f"✅ Correct! The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'."
+        feedback = f"✅ Correct! The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}' (Score: {game_state['score']}/{game_state['trials']})."
     else:
-        # Re-add the noun to the pool for retry
+        # Add the noun back to the remaining list for retry
         game_state["remaining_nouns"].insert(0, game_state["current_noun"])
         feedback = f"❌ Incorrect. The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. It will appear again."
 
@@ -83,7 +84,7 @@ st.title("NounSmart: Spelling")
 st.markdown("Practice the plural forms of words from unit 1 and 2. There are 18 items in total. Try to get all the answers correct. Enter your nickname to start.")
 
 # Input for nickname
-nickname = st.text_input("Nickname:", key="nickname_input")
+nickname = st.text_input("Enter your nickname:", key="nickname_input")
 
 if st.button("Start Game"):
     if nickname:
@@ -106,4 +107,5 @@ if st.session_state.game_state["remaining_nouns"] is not None:
 
 if st.session_state.game_state["remaining_nouns"] is not None and not st.session_state.game_state["remaining_nouns"]:
     st.markdown(f"🎉 Game over! Final Score: {st.session_state.game_state['score']}/{st.session_state.game_state['total_nouns']}")
+
 
