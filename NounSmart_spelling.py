@@ -120,7 +120,7 @@ if st.session_state.game_state["remaining_nouns"] is not None and not st.session
     if score == total_nouns and trials == total_nouns:
         st.markdown(f"🌟 **Perfect score!** Incredible work, {st.session_state.game_state['nickname']}! You got every answer right on the first try! 🌟")
     else:
-        st.markdown(f"👏 **Well done, {st.session_state.game_state['nickname']}!** You scored {score}/{total_nouns}. Keep practicing to achieve a perfect score!")
+        st.markdown(f"👏 **Well done, {st.session_state.game_state['nickname']}!** You scored {score}/{trials}. Keep practicing to achieve a perfect score!")
 
 
 
