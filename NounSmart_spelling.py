@@ -76,18 +76,18 @@ def check_plural(user_input):
         if game_state["current_noun"]["Word"] not in game_state["answered_correctly"]:
             game_state["score"] += 1
             game_state["answered_correctly"].add(game_state["current_noun"]["Word"])
-        feedback = f"✅ Correct! The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. (Score: {game_state['score']}/{game_state['trials']})"
+        feedback = f"✅ Correct! The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. (Score: {game_state['score']}/{game_state['trials']}) Click "Show the Noun" button to continue."
     else:
         # Add the noun back to the remaining list for retry
         game_state["remaining_nouns"].insert(0, game_state["current_noun"])
-        feedback = f"❌ Incorrect. The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. (Score: {game_state['score']}/{game_state['trials']}). It will appear again."
+        feedback = f"❌ Incorrect. The plural of '{game_state['current_noun']['Word']}' is '{correct_plural}'. (Score: {game_state['score']}/{game_state['trials']}). It will appear again. Click "Show the Noun" button to continue."
 
     game_state["current_noun"] = None  # Reset current noun after checking
     return feedback
 
 # Streamlit UI
 st.title("NounSmart: Spelling")
-st.markdown("Practice the plural forms of words from unit 1 and 2. There are 18 items in total. Try to get all the answers correct. Enter your nickname to start.")
+st.markdown("Practice the plural forms of words from unit 1 and 2. There are 16 items in total. Try to get all the answers correct. Enter your nickname to start.")
 
 # Input for nickname
 nickname = st.text_input("Enter your nickname:", key="nickname_input")
